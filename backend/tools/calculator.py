@@ -7,9 +7,13 @@ def calculate(expression):
 
 
 if __name__ == "__main__":
-    expression = "12 * 5 + 20"
+    expressions = [
+        "12 * 5 + 20",
+        "50 + 25 + 10",
+        "100 * 0.2"
+    ]
 
-    result = calculate(expression)
+    for expression in expressions:
+        result = calculate(expression)
 
-    print(f"Expression: {expression}")
-    print(f"Result: {result}")
+        print(f"{expression} = {result}")
