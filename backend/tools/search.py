@@ -1,16 +1,41 @@
+DEMO_MODE = True
+failure_triggered = False
+
+
 def search(query):
+    global failure_triggered
+
     print(f"Searching for: {query}")
+
+    # Controlled failure for the hackathon demo
+    if DEMO_MODE and not failure_triggered:
+        failure_triggered = True
+        raise RuntimeError("Primary search tool unavailable")
 
     results = [
         {
-            "title": "Example Result 1",
-            "source": "Example Source",
-            "snippet": "Information found for the search query."
+            "title": "AWS Deployment Options",
+            "source": "AWS",
+            "snippet": "Cloud deployment options for Python applications."
         },
         {
-            "title": "Example Result 2",
-            "source": "Example Source",
-            "snippet": "Another piece of information related to the query."
+            "title": "Azure App Services",
+            "source": "Microsoft Azure",
+            "snippet": "Managed hosting options for web applications."
+        }
+    ]
+
+    return results
+
+
+def fallback_search(query):
+    print(f"Fallback search activated for: {query}")
+
+    results = [
+        {
+            "title": "Fallback Cloud Deployment Result",
+            "source": "Fallback Source",
+            "snippet": "Alternative source successfully retrieved deployment information."
         }
     ]
 
@@ -20,7 +45,11 @@ def search(query):
 if __name__ == "__main__":
     query = "Python cloud deployment options"
 
-    results = search(query)
+    try:
+        results = search(query)
+    except Exception as error:
+        print(f"Primary search failed: {error}")
+        results = fallback_search(query)
 
     print("\nSEARCH RESULTS\n")
 
@@ -28,4 +57,3 @@ if __name__ == "__main__":
         print(f"Title: {result['title']}")
         print(f"Source: {result['source']}")
         print(f"Info: {result['snippet']}")
-        print()

@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Control Room</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="app">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+
+            <div class="logo">
+                <div class="logo-mark">◈</div>
+
+                <div>
+                    <h1>CONTROL ROOM</h1>
+                    <span>AUTONOMOUS INTERNET CONTROL</span>
+                </div>
+            </div>
+
+            <div class="system-status">
+                <span class="status-dot"></span>
+                SYSTEM ONLINE
+            </div>
+
+            <div class="sidebar-section">
+                <span class="label">SYSTEM</span>
+
+                <div class="side-item active">
+                    <span>⌁</span>
+                    Mission Control
+                </div>
+
+                <div class="side-item">
+                    <span>◉</span>
+                    Execution History
+                </div>
+
+                <div class="side-item">
+                    <span>⚙</span>
+                    Tools
+                </div>
+            </div>
+
+            <div class="sidebar-bottom">
+                <span>CONTROL ROOM v1.0</span>
+                <span>AI ORCHESTRATION SYSTEM</span>
+            </div>
+
+        </aside>
+
+
+        <!-- MAIN -->
+        <main class="main">
+
+            <header class="topbar">
+                <div>
+                    <span class="eyebrow">MISSION CONTROL</span>
+                    <h2>Autonomous Execution</h2>
+                </div>
+
+                <div class="top-status">
+                    <span class="status-dot"></span>
+                    BACKEND CONNECTED
+                </div>
+            </header>
+
+
+            <!-- GOAL -->
+            <section class="goal-panel">
+
+                <div class="panel-heading">
+                    <div>
+                        <span class="eyebrow">01 / OBJECTIVE</span>
+                        <h3>What do you want me to accomplish?</h3>
+                    </div>
+                </div>
+
+                <textarea
+                    id="goalInput"
+                    placeholder="Enter a high-level objective..."
+                >Research and compare cloud deployment options for my Python application, calculate the estimated cost, verify the information, and create a deployment plan.</textarea>
+
+                <div class="goal-footer">
+
+                    <div class="goal-hint">
+                        The Control Room will plan, execute, verify and recover automatically.
+                    </div>
+
+                    <button id="executeBtn" onclick="executeMission()">
+                        EXECUTE MISSION
+                        <span>→</span>
+                    </button>
+
+                </div>
+
+            </section>
+
+
+            <!-- STATS -->
+            <section class="stats">
+
+                <div class="stat-card">
+                    <span class="stat-label">TASKS</span>
+                    <strong id="taskCount">—</strong>
+                </div>
+
+                <div class="stat-card">
+                    <span class="stat-label">TOOLS USED</span>
+                    <strong id="toolCount">—</strong>
+                </div>
+
+                <div class="stat-card">
+                    <span class="stat-label">VERIFIED</span>
+                    <strong id="verifiedCount">—</strong>
+                </div>
+
+                <div class="stat-card recovery-stat">
+                    <span class="stat-label">RECOVERIES</span>
+                    <strong id="recoveryCount">—</strong>
+                </div>
+
+            </section>
+
+
+            <!-- WORKSPACE -->
+            <section class="workspace">
+
+                <!-- PLAN -->
+                <div class="panel">
+
+                    <div class="panel-title">
+                        <span class="eyebrow">02 / PLAN</span>
+                        <span id="planStatus">WAITING</span>
+                    </div>
+
+                    <div id="taskList" class="task-list">
+
+                        <div class="empty-state">
+                            Waiting for mission...
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- TOOLS -->
+                <div class="panel">
+
+                    <div class="panel-title">
+                        <span class="eyebrow">03 / TOOL CONTROL</span>
+                        <span id="toolStatus">STANDBY</span>
+                    </div>
+
+                    <div class="tools-grid">
+
+                        <div class="tool-card" id="tool-search">
+                            <div class="tool-icon">⌕</div>
+                            <div>
+                                <strong>SEARCH</strong>
+                                <span>Information retrieval</span>
+                            </div>
+                            <b>READY</b>
+                        </div>
+
+                        <div class="tool-card" id="tool-calculator">
+                            <div class="tool-icon">∑</div>
+                            <div>
+                                <strong>CALCULATOR</strong>
+                                <span>Numerical analysis</span>
+                            </div>
+                            <b>READY</b>
+                        </div>
+
+                        <div class="tool-card" id="tool-verifier">
+                            <div class="tool-icon">✓</div>
+                            <div>
+                                <strong>VERIFIER</strong>
+                                <span>Result validation</span>
+                            </div>
+                            <b>READY</b>
+                        </div>
+
+                        <div class="tool-card" id="tool-recovery">
+                            <div class="tool-icon">↻</div>
+                            <div>
+                                <strong>RECOVERY</strong>
+                                <span>Failure handling</span>
+                            </div>
+                            <b>READY</b>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- EXECUTION LOG -->
+                <div class="panel log-panel">
+
+                    <div class="panel-title">
+                        <span class="eyebrow">04 / EXECUTION LOG</span>
+                        <span id="logStatus">LIVE</span>
+                    </div>
+
+                    <div id="executionLog" class="execution-log">
+
+                        <div class="log-entry">
+                            <span>--:--:--</span>
+                            <p>System ready. Waiting for mission.</p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- RESULT -->
+                <div class="panel result-panel">
+
+                    <div class="panel-title">
+                        <span class="eyebrow">05 / FINAL RESULT</span>
+                        <span id="resultStatus">AWAITING</span>
+                    </div>
+
+                    <div id="finalResult" class="final-result">
+
+                        <div class="empty-state">
+                            Execute a mission to generate results.
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+    <script src="app.js"></script>
+
+</body>
+</html>

@@ -1,10 +1,13 @@
 def recover(tool_name, task):
-    print(f"\n⚠ Tool failure detected: {tool_name}")
-    print("↻ Recovery initiated")
-    print(f"Selecting alternative for: {task}")
+    print(f"\n⚠ TOOL FAILURE")
+    print(f"Failed tool: {tool_name}")
+    print(f"Failed task: {task}")
+
+    print("\n↻ RECOVERY INITIATED")
+    print("Analyzing available alternatives...")
 
     if tool_name == "search":
-        alternative_tool = "reader"
+        alternative_tool = "fallback_search"
 
     elif tool_name == "calculator":
         alternative_tool = "manual_calculation"
@@ -27,5 +30,5 @@ if __name__ == "__main__":
         "Research deployment options"
     )
 
-    print("\nRECOVERY RESULT\n")
+    print("\nRECOVERY RESULT")
     print(result)

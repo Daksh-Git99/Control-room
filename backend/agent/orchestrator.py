@@ -1,11 +1,10 @@
 from agent.planner import create_plan
-from agent.tool_router import select_tool
 from agent.executor import execute_plan
 from tools.verifier import verify
-from tools.recovery import recover
 
 
 def run_control_room(goal):
+
     print("\n==============================")
     print("       CONTROL ROOM")
     print("==============================")
@@ -13,40 +12,48 @@ def run_control_room(goal):
     print("\nGOAL:")
     print(goal)
 
-    # 1. Planning
-    print("\n[1] Creating plan...")
+    # =========================
+    # 1. AI PLANNING
+    # =========================
 
-    tasks = create_plan(goal)
+    print("\n[1] AI PLANNER")
 
-    print(f"Plan created with {len(tasks)} tasks.")
+    plan = create_plan(goal)
 
-    # 2. Tool selection
-    print("\n[2] Selecting tools...")
+    print(
+        f"✓ Plan created with "
+        f"{len(plan)} tasks."
+    )
 
-    tool_plan = []
+    for number, item in enumerate(plan, start=1):
 
-    for task in tasks:
-        tool = select_tool(task)
+        print(
+            f"  {number}. "
+            f"{item['task']} "
+            f"→ {item['tool']}"
+        )
 
-        tool_plan.append({
-            "task": task,
-            "tool": tool
-        })
+    # =========================
+    # 2. EXECUTION
+    # =========================
 
-        print(f"  {task} → {tool}")
+    print("\n[2] TOOL EXECUTION")
 
-    # 3. Execution
-    print("\n[3] Starting execution...")
+    results = execute_plan(plan)
 
-    results = execute_plan(tasks)
+    # =========================
+    # 3. VERIFICATION
+    # =========================
 
-    # 4. Verification
-    print("\n[4] Verifying results...")
+    print("\n[3] VERIFICATION")
 
     verification_results = []
 
     for result in results:
-        verification = verify(result["result"])
+
+        verification = verify(
+            result["result"]
+        )
 
         verification_results.append({
             "task": result["task"],
@@ -55,46 +62,64 @@ def run_control_room(goal):
         })
 
         if verification["verified"]:
-            print(f"✓ {result['task']} → VERIFIED")
+
+            print(
+                f"✓ {result['task']} "
+                f"→ VERIFIED"
+            )
+
         else:
-            print(f"⚠ {result['task']} → FAILED VERIFICATION")
 
-    # 5. Recovery demonstration
-    print("\n[5] Recovery system...")
+            print(
+                f"⚠ {result['task']} "
+                f"→ FAILED"
+            )
 
-    recovery_result = recover(
-        "search",
-        "Research deployment options"
+    # =========================
+    # 4. FINAL STATUS
+    # =========================
+
+    recovered_count = sum(
+        1 for result in results
+        if result.get("recovered")
+    )
+
+    verified_count = sum(
+        1 for result in verification_results
+        if result["verified"]
     )
 
     print("\n==============================")
     print("       FINAL STATUS")
     print("==============================")
 
-    for result in results:
-        print(f"✓ {result['task']}")
-
-    print("\nVerification:")
-    print(verification_results)
-
-    print("\nRecovery:")
-    print(recovery_result)
+    print(f"Tasks: {len(plan)}")
+    print(f"Verified: {verified_count}")
+    print(f"Recoveries: {recovered_count}")
 
     return {
         "goal": goal,
-        "tasks": tasks,
-        "tool_plan": tool_plan,
+        "tasks": [
+            item["task"]
+            for item in plan
+        ],
+        "tool_plan": plan,
         "results": results,
         "verification": verification_results,
-        "recovery": recovery_result
+        "recovery": {
+            "recovered": recovered_count > 0,
+            "count": recovered_count
+        }
     }
 
 
 if __name__ == "__main__":
+
     goal = (
-        "Research and compare deployment options for "
-        "my Python application, calculate the estimated cost, "
-        "verify the information, and create a deployment plan."
+        "Research and compare deployment options "
+        "for my Python application, calculate the "
+        "estimated cost, verify the information, "
+        "and create a deployment plan."
     )
 
     run_control_room(goal)
