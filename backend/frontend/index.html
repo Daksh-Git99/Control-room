@@ -1,587 +1,704 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Control Room</title>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-    <link rel="stylesheet" href="style.css">
+    <title>
+        Control Room — Autonomous Agent
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
 </head>
+
 
 <body>
 
-<div class="app">
+    <!-- =====================================================
+         BACKGROUND
+    ====================================================== -->
 
-    <!-- SIDEBAR -->
-    <aside class="sidebar">
+    <div class="background-grid"></div>
 
-        <div class="brand">
-            <div class="brand-icon">◈</div>
-
-            <div>
-                <h1>CONTROL ROOM</h1>
-                <span>AUTONOMOUS AGENT</span>
-            </div>
-        </div>
-
-        <div class="system-status">
-            <span class="status-dot"></span>
-            SYSTEM ONLINE
-        </div>
-
-        <nav>
-
-            <button class="nav-item active" data-section="command">
-                <span>01</span>
-                COMMAND
-            </button>
-
-            <button class="nav-item" data-section="execution">
-                <span>02</span>
-                EXECUTION
-            </button>
-
-            <button class="nav-item" data-section="results">
-                <span>03</span>
-                RESULTS
-            </button>
-
-            <button class="nav-item" data-section="system">
-                <span>04</span>
-                SYSTEM
-            </button>
-
-        </nav>
-
-        <div class="sidebar-bottom">
-
-            <div class="mini-status">
-                <span>PLANNER</span>
-                <b>ONLINE</b>
-            </div>
-
-            <div class="mini-status">
-                <span>EXECUTOR</span>
-                <b>ONLINE</b>
-            </div>
-
-            <div class="mini-status">
-                <span>RECOVERY</span>
-                <b>READY</b>
-            </div>
-
-        </div>
-
-    </aside>
+    <div class="ambient ambient-one"></div>
+    <div class="ambient ambient-two"></div>
 
 
-    <!-- MAIN -->
-    <main class="main">
+    <!-- =====================================================
+         APPLICATION
+    ====================================================== -->
 
-        <!-- TOP BAR -->
-        <header class="topbar">
-
-            <div>
-                <span class="eyebrow">AUTONOMOUS INTERNET CONTROL SYSTEM</span>
-                <h2 id="pageTitle">Mission Control</h2>
-            </div>
-
-            <div class="connection">
-                <span class="status-dot"></span>
-                BACKEND CONNECTED
-            </div>
-
-        </header>
+    <div class="app-shell">
 
 
-        <!-- ================= COMMAND ================= -->
+        <!-- =================================================
+             SIDEBAR
+        ================================================== -->
 
-        <section id="command" class="section active-section">
+        <aside class="sidebar">
 
-            <div class="hero">
+            <div class="brand">
 
-                <div class="hero-copy">
-
-                    <span class="eyebrow">MISSION CONTROL</span>
-
-                    <h3>
-                        Give the agent a goal.<br>
-                        <strong>Let it execute.</strong>
-                    </h3>
-
-                    <p>
-                        The Control Room decomposes high-level goals,
-                        selects tools, executes tasks, verifies results,
-                        and recovers from failures.
-                    </p>
-
+                <div class="brand-icon">
+                    ◇
                 </div>
-
-                <div class="agent-orb">
-                    <div class="orb-core">AI</div>
-                    <div class="orb-ring ring-one"></div>
-                    <div class="orb-ring ring-two"></div>
-                </div>
-
-            </div>
-
-
-            <!-- MISSION INPUT -->
-
-            <div class="mission-card">
-
-                <div class="card-heading">
-                    <div>
-                        <span class="eyebrow">NEW MISSION</span>
-                        <h3>What should the agent accomplish?</h3>
-                    </div>
-
-                    <span class="ready-badge">READY</span>
-                </div>
-
-                <textarea
-                    id="goalInput"
-                    placeholder="Example: Research and compare cloud deployment options for my Python application, calculate the estimated cost, verify the information, and create a deployment plan."
-                ></textarea>
-
-                <div class="mission-footer">
-
-                    <div class="hint">
-                        <span>ENTER</span>
-                        Execute mission
-                    </div>
-
-                    <button id="executeBtn" class="execute-btn">
-                        EXECUTE MISSION
-                        <span>→</span>
-                    </button>
-
-                </div>
-
-            </div>
-
-
-            <!-- STATS -->
-
-            <div class="stats-grid">
-
-                <div class="stat-card">
-                    <span>TASKS</span>
-                    <strong id="statTasks">—</strong>
-                    <small>planned</small>
-                </div>
-
-                <div class="stat-card">
-                    <span>TOOLS</span>
-                    <strong id="statTools">—</strong>
-                    <small>activated</small>
-                </div>
-
-                <div class="stat-card">
-                    <span>VERIFIED</span>
-                    <strong id="statVerified">—</strong>
-                    <small>validated</small>
-                </div>
-
-                <div class="stat-card recovery-stat">
-                    <span>RECOVERIES</span>
-                    <strong id="statRecovery">—</strong>
-                    <small>failures handled</small>
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- ================= EXECUTION ================= -->
-
-        <section id="execution" class="section">
-
-            <div class="section-header">
 
                 <div>
-                    <span class="eyebrow">AGENT ACTIVITY</span>
-                    <h3>Execution Pipeline</h3>
-                </div>
 
-                <div id="executionStatus" class="execution-status">
-                    WAITING
-                </div>
+                    <h1>
+                        CONTROL ROOM
+                    </h1>
 
-            </div>
-
-
-            <!-- PIPELINE -->
-
-            <div class="pipeline-card">
-
-                <div class="pipeline-node">
-                    <div class="node-icon">◈</div>
-                    <span>PLANNER</span>
-                </div>
-
-                <div class="pipeline-line"></div>
-
-                <div class="pipeline-node">
-                    <div class="node-icon">◇</div>
-                    <span>EXECUTOR</span>
-                </div>
-
-                <div class="pipeline-line"></div>
-
-                <div class="pipeline-node">
-                    <div class="node-icon">⚙</div>
-                    <span>TOOLS</span>
-                </div>
-
-                <div class="pipeline-line"></div>
-
-                <div class="pipeline-node">
-                    <div class="node-icon">✓</div>
-                    <span>VERIFIER</span>
-                </div>
-
-                <div class="pipeline-line"></div>
-
-                <div class="pipeline-node recovery-node">
-                    <div class="node-icon">↻</div>
-                    <span>RECOVERY</span>
-                </div>
-
-            </div>
-
-
-            <!-- TASKS -->
-
-            <div class="execution-layout">
-
-                <div class="panel">
-
-                    <div class="panel-title">
-                        <span>MISSION TASKS</span>
-                        <span id="taskCount">0</span>
-                    </div>
-
-                    <div id="taskList" class="task-list">
-                        <div class="empty-state">
-                            Execute a mission to populate the pipeline.
-                        </div>
-                    </div>
-
-                </div>
-
-
-                <div class="panel">
-
-                    <div class="panel-title">
-                        <span>EXECUTION LOG</span>
-                        <span class="live-indicator">
-                            ● LIVE
-                        </span>
-                    </div>
-
-                    <div id="executionLog" class="log">
-
-                        <div class="log-empty">
-                            Waiting for mission...
-                        </div>
-
-                    </div>
+                    <span>
+                        AUTONOMOUS AGENT
+                    </span>
 
                 </div>
 
             </div>
 
 
-            <!-- TOOL CARDS -->
+            <div class="system-pill">
 
-            <div class="tool-grid">
+                <span class="pulse"></span>
 
-                <div id="tool-search" class="tool-card">
-                    <div class="tool-top">
-                        <span class="tool-icon">⌕</span>
-                        <span class="tool-status">IDLE</span>
-                    </div>
-                    <h4>SEARCH ENGINE</h4>
-                    <p>External information retrieval</p>
-                </div>
-
-                <div id="tool-calculator" class="tool-card">
-                    <div class="tool-top">
-                        <span class="tool-icon">∑</span>
-                        <span class="tool-status">IDLE</span>
-                    </div>
-                    <h4>COMPUTATION</h4>
-                    <p>Numerical calculations</p>
-                </div>
-
-                <div id="tool-verifier" class="tool-card">
-                    <div class="tool-top">
-                        <span class="tool-icon">✓</span>
-                        <span class="tool-status">IDLE</span>
-                    </div>
-                    <h4>VERIFIER</h4>
-                    <p>Result validation</p>
-                </div>
-
-                <div id="tool-recovery" class="tool-card recovery-tool">
-                    <div class="tool-top">
-                        <span class="tool-icon">↻</span>
-                        <span class="tool-status">READY</span>
-                    </div>
-                    <h4>RECOVERY ENGINE</h4>
-                    <p>Failure detection and fallback</p>
-                </div>
+                <span>
+                    SYSTEM ONLINE
+                </span>
 
             </div>
 
-        </section>
+
+            <nav class="navigation">
+
+                <button
+                    class="nav-item active"
+                    data-section="command"
+                >
+
+                    <span class="nav-number">
+                        01
+                    </span>
+
+                    <span>
+                        COMMAND
+                    </span>
+
+                </button>
 
 
-        <!-- ================= RESULTS ================= -->
+                <button
+                    class="nav-item"
+                    data-section="execution"
+                >
 
-        <section id="results" class="section">
+                    <span class="nav-number">
+                        02
+                    </span>
 
-            <div class="section-header">
+                    <span>
+                        EXECUTION
+                    </span>
+
+                </button>
+
+
+                <button
+                    class="nav-item"
+                    data-section="results"
+                >
+
+                    <span class="nav-number">
+                        03
+                    </span>
+
+                    <span>
+                        RESULTS
+                    </span>
+
+                </button>
+
+
+                <button
+                    class="nav-item"
+                    data-section="system"
+                >
+
+                    <span class="nav-number">
+                        04
+                    </span>
+
+                    <span>
+                        SYSTEM
+                    </span>
+
+                </button>
+
+            </nav>
+
+
+            <div class="sidebar-status">
 
                 <div>
-                    <span class="eyebrow">MISSION OUTPUT</span>
-                    <h3>Results & Intelligence</h3>
+                    <span>
+                        PLANNER
+                    </span>
+
+                    <strong>
+                        ONLINE
+                    </strong>
                 </div>
-
-                <div id="resultBadge" class="result-badge">
-                    NO MISSION
-                </div>
-
-            </div>
-
-
-            <div class="goal-result-card">
-
-                <span class="eyebrow">OBJECTIVE</span>
-
-                <p id="resultGoal">
-                    No mission has been executed yet.
-                </p>
-
-            </div>
-
-
-            <div class="result-layout">
-
-                <div class="panel">
-
-                    <div class="panel-title">
-                        <span>EXECUTION RESULTS</span>
-                    </div>
-
-                    <div id="resultList" class="result-list">
-
-                        <div class="empty-state">
-                            Results will appear here after execution.
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <div class="panel">
-
-                    <div class="panel-title">
-                        <span>VERIFICATION</span>
-                    </div>
-
-                    <div id="verificationList" class="verification-list">
-
-                        <div class="empty-state">
-                            Awaiting verification.
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <div class="final-answer">
-
-                <div class="final-heading">
-                    <span class="eyebrow">AGENT OUTPUT</span>
-                    <span class="verified-label">✓ VERIFIED PIPELINE</span>
-                </div>
-
-                <h3>Mission Execution Complete</h3>
-
-                <p id="finalText">
-                    Execute a mission to generate the agent's results.
-                </p>
-
-            </div>
-
-        </section>
-
-
-        <!-- ================= SYSTEM ================= -->
-
-        <section id="system" class="section">
-
-            <div class="section-header">
 
                 <div>
-                    <span class="eyebrow">SYSTEM ARCHITECTURE</span>
-                    <h3>Control Room Infrastructure</h3>
+                    <span>
+                        EXECUTOR
+                    </span>
+
+                    <strong>
+                        ONLINE
+                    </strong>
+                </div>
+
+                <div>
+                    <span>
+                        RECOVERY
+                    </span>
+
+                    <strong>
+                        READY
+                    </strong>
+                </div>
+
+                <div>
+                    <span>
+                        VERIFIER
+                    </span>
+
+                    <strong>
+                        ONLINE
+                    </strong>
+                </div>
+
+            </div>
+
+        </aside>
+
+
+
+        <!-- =================================================
+             MAIN
+        ================================================== -->
+
+        <main class="main-content">
+
+
+            <!-- =============================================
+                 TOP BAR
+            ============================================== -->
+
+            <header class="topbar">
+
+                <div>
+
+                    <span class="eyebrow">
+                        AUTONOMOUS EXECUTION ENVIRONMENT
+                    </span>
+
+                    <h2 id="page-title">
+                        Command Center
+                    </h2>
+
                 </div>
 
                 <div class="connection">
-                    ● ALL SYSTEMS NOMINAL
-                </div>
 
-            </div>
+                    <span class="connection-dot"></span>
 
-
-            <div class="architecture">
-
-                <div class="architecture-layer">
-
-                    <span class="layer-label">USER</span>
-
-                    <div class="architecture-box user-box">
-                        <strong>MISSION GOAL</strong>
-                        <small>High-level objective</small>
-                    </div>
+                    <span id="system-status">
+                        SYSTEM ONLINE
+                    </span>
 
                 </div>
 
+            </header>
 
-                <div class="architecture-arrow">↓</div>
 
 
-                <div class="architecture-layer">
+            <!-- =============================================
+                 COMMAND
+            ============================================== -->
 
-                    <span class="layer-label">AI CORE</span>
+            <section
+                class="page-section active"
+                id="command"
+            >
 
-                    <div class="architecture-box planner-box">
-                        <strong>AI PLANNER</strong>
-                        <small>Goal → executable tasks</small>
+                <div class="hero">
+
+                    <div class="hero-tag">
+                        NEW MISSION
                     </div>
 
-                </div>
+                    <h2>
+                        What should the agent accomplish?
+                    </h2>
+
+                    <p>
+                        Give the Control Room a high-level
+                        objective. The system will decompose it,
+                        select tools, execute the workflow,
+                        recover from failures and verify the result.
+                    </p>
 
 
-                <div class="architecture-arrow">↓</div>
+                    <div class="goal-box">
+
+                        <textarea
+                            id="goal-input"
+                            spellcheck="false"
+                            placeholder="Example: Research and compare cloud deployment options for my Python web application..."
+                        >Research and compare 3 cloud deployment options for my Python web application, estimate their monthly cost, verify the information, and create a deployment plan.</textarea>
 
 
-                <div class="architecture-layer multi">
+                        <div class="goal-footer">
 
-                    <span class="layer-label">EXECUTION</span>
+                            <span>
+                                CTRL + ENTER
+                                &nbsp;·&nbsp;
+                                EXECUTE MISSION
+                            </span>
 
-                    <div class="architecture-box">
-                        <strong>EXECUTOR</strong>
-                        <small>Runs task plan</small>
-                    </div>
+                            <button
+                                id="run-button"
+                                class="primary-button"
+                            >
 
-                    <div class="architecture-box">
-                        <strong>TOOL ROUTER</strong>
-                        <small>Selects capability</small>
-                    </div>
+                                <span>
+                                    ▶
+                                </span>
 
-                </div>
+                                EXECUTE MISSION
 
+                                <span>
+                                    →
+                                </span>
 
-                <div class="architecture-arrow">↓</div>
+                            </button>
 
+                        </div>
 
-                <div class="architecture-layer tools-layer">
-
-                    <span class="layer-label">TOOLS</span>
-
-                    <div class="architecture-box tool-arch">
-                        <strong>SEARCH</strong>
-                    </div>
-
-                    <div class="architecture-box tool-arch">
-                        <strong>CALCULATOR</strong>
-                    </div>
-
-                    <div class="architecture-box tool-arch">
-                        <strong>VERIFIER</strong>
-                    </div>
-
-                    <div class="architecture-box tool-arch recovery-arch">
-                        <strong>RECOVERY</strong>
-                    </div>
-
-                </div>
-
-
-                <div class="architecture-arrow">↓</div>
-
-
-                <div class="architecture-layer">
-
-                    <span class="layer-label">OUTPUT</span>
-
-                    <div class="architecture-box result-arch">
-                        <strong>VERIFIED RESULT</strong>
-                        <small>Final mission output</small>
                     </div>
 
                 </div>
 
-            </div>
+
+                <div class="capability-grid">
+
+                    <div class="capability">
+                        <span>PLANNING</span>
+                        <strong>AI</strong>
+                        <p>Dynamic task decomposition</p>
+                    </div>
+
+                    <div class="capability">
+                        <span>TOOLS</span>
+                        <strong>04</strong>
+                        <p>Search · Compute · Verify</p>
+                    </div>
+
+                    <div class="capability">
+                        <span>RECOVERY</span>
+                        <strong>ON</strong>
+                        <p>Failure handling enabled</p>
+                    </div>
+
+                    <div class="capability">
+                        <span>VERIFICATION</span>
+                        <strong>ON</strong>
+                        <p>Results checked</p>
+                    </div>
+
+                </div>
+
+            </section>
 
 
-            <div class="system-status-grid">
 
-                <div class="system-card">
-                    <span class="status-dot"></span>
+            <!-- =============================================
+                 EXECUTION
+            ============================================== -->
+
+            <section
+                class="page-section"
+                id="execution"
+            >
+
+                <div class="section-heading">
+
                     <div>
-                        <strong>FASTAPI SERVER</strong>
-                        <small>Backend API</small>
+                        <span class="eyebrow">
+                            LIVE PIPELINE
+                        </span>
+
+                        <h2>
+                            Mission Execution
+                        </h2>
                     </div>
-                    <b>ONLINE</b>
+
+                    <span class="live-badge">
+                        LIVE
+                    </span>
+
                 </div>
 
-                <div class="system-card">
-                    <span class="status-dot"></span>
+
+                <div class="execution-layout">
+
+                    <div class="panel">
+
+                        <div class="panel-title">
+                            TASK PLAN
+                        </div>
+
+                        <div
+                            id="task-list"
+                            class="task-list"
+                        >
+                            <div class="empty-state">
+                                Submit a mission to generate tasks.
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="panel">
+
+                        <div class="panel-title">
+                            EXECUTION LOG
+                        </div>
+
+                        <div
+                            id="execution-log"
+                            class="execution-log"
+                        >
+                            <div class="empty-state">
+                                Waiting for mission...
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =============================================
+                 RESULTS — LARGE
+            ============================================== -->
+
+            <section
+                class="page-section results-section"
+                id="results"
+            >
+
+                <div class="section-heading">
+
                     <div>
-                        <strong>AI PLANNER</strong>
-                        <small>Dynamic planning</small>
+
+                        <span class="eyebrow">
+                            MISSION OUTPUT
+                        </span>
+
+                        <h2>
+                            Intelligence Report
+                        </h2>
+
+                        <p>
+                            Structured findings, verification,
+                            recovery events and final synthesis.
+                        </p>
+
                     </div>
-                    <b>ONLINE</b>
+
+                    <div class="result-status">
+                        <span class="connection-dot"></span>
+                        VERIFIED PIPELINE
+                    </div>
+
                 </div>
 
-                <div class="system-card">
-                    <span class="status-dot"></span>
+
+                <!-- STATISTICS -->
+
+                <div class="stats-grid">
+
+                    <div class="stat-card">
+
+                        <span>
+                            TASKS
+                        </span>
+
+                        <strong id="task-count">
+                            —
+                        </strong>
+
+                    </div>
+
+                    <div class="stat-card">
+
+                        <span>
+                            VERIFIED
+                        </span>
+
+                        <strong id="verified-count">
+                            —
+                        </strong>
+
+                    </div>
+
+                    <div class="stat-card">
+
+                        <span>
+                            RECOVERIES
+                        </span>
+
+                        <strong id="recovery-count">
+                            —
+                        </strong>
+
+                    </div>
+
+                    <div class="stat-card">
+
+                        <span>
+                            STATUS
+                        </span>
+
+                        <strong id="system-result-status">
+                            —
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <!-- BIG FINAL RESULT -->
+
+                <div
+                    id="final-result"
+                    class="final-result"
+                >
+
+                    <div class="empty-large">
+
+                        <div class="empty-icon">
+                            ◇
+                        </div>
+
+                        <h3>
+                            No mission executed
+                        </h3>
+
+                        <p>
+                            Submit a goal from the Command Center
+                            to generate an intelligence report.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- RESEARCH + VERIFICATION -->
+
+                <div class="result-columns">
+
+
+                    <div class="result-panel">
+
+                        <div class="panel-title">
+                            RESEARCH FINDINGS
+                        </div>
+
+                        <div
+                            id="findings"
+                            class="findings"
+                        >
+
+                            <div class="empty-state">
+                                Waiting for research results.
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="result-panel">
+
+                        <div class="panel-title">
+                            VERIFICATION
+                        </div>
+
+                        <div
+                            id="verification"
+                            class="verification"
+                        >
+
+                            <div class="empty-state">
+                                Waiting for verification.
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- RECOVERY -->
+
+                <div class="result-panel recovery-panel">
+
+                    <div class="panel-title">
+                        RECOVERY EVENT
+                    </div>
+
+                    <div
+                        id="recovery-event"
+                        class="recovery-event"
+                    >
+
+                        <div class="empty-state">
+                            No recovery events yet.
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =============================================
+                 SYSTEM
+            ============================================== -->
+
+            <section
+                class="page-section"
+                id="system"
+            >
+
+                <div class="section-heading">
+
                     <div>
-                        <strong>TOOL EXECUTOR</strong>
-                        <small>Task execution</small>
+
+                        <span class="eyebrow">
+                            SYSTEM ARCHITECTURE
+                        </span>
+
+                        <h2>
+                            Control Room Stack
+                        </h2>
+
                     </div>
-                    <b>ONLINE</b>
+
                 </div>
 
-                <div class="system-card">
-                    <span class="status-dot"></span>
-                    <div>
-                        <strong>RECOVERY ENGINE</strong>
-                        <small>Failure handling</small>
+
+                <div class="architecture">
+
+                    <div class="architecture-node">
+                        <span>01</span>
+                        USER GOAL
                     </div>
-                    <b>READY</b>
+
+                    <div class="architecture-arrow">
+                        ↓
+                    </div>
+
+                    <div class="architecture-node">
+                        <span>02</span>
+                        AI PLANNER
+                    </div>
+
+                    <div class="architecture-arrow">
+                        ↓
+                    </div>
+
+                    <div class="architecture-node">
+                        <span>03</span>
+                        TOOL ROUTER
+                    </div>
+
+                    <div class="architecture-arrow">
+                        ↓
+                    </div>
+
+                    <div class="architecture-tools">
+
+                        <div>
+                            SEARCH
+                        </div>
+
+                        <div>
+                            CALCULATOR
+                        </div>
+
+                        <div>
+                            READER
+                        </div>
+
+                        <div>
+                            VERIFIER
+                        </div>
+
+                    </div>
+
+                    <div class="architecture-arrow">
+                        ↓
+                    </div>
+
+                    <div class="architecture-node recovery-node">
+                        <span>04</span>
+                        RECOVERY
+                    </div>
+
+                    <div class="architecture-arrow">
+                        ↓
+                    </div>
+
+                    <div class="architecture-node">
+                        <span>05</span>
+                        FINAL SYNTHESIS
+                    </div>
+
                 </div>
 
-            </div>
+            </section>
 
-        </section>
+        </main>
 
-    </main>
+    </div>
 
-</div>
 
-<script src="app.js"></script>
+    <script src="app.js"></script>
 
 </body>
+
 </html>

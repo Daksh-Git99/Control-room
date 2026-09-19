@@ -1,59 +1,156 @@
+import os
+
+from dotenv import load_dotenv
+from openai import OpenAI
+
+
+# ==================================================
+# LOAD ENVIRONMENT
+# ==================================================
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+ENV_PATH = os.path.join(BASE_DIR, ".env")
+
+load_dotenv(ENV_PATH)
+
+
+# ==================================================
+# DEMO FAILURE CONTROL
+# ==================================================
+
+# Keep this True for the hackathon demo.
+# The first search intentionally fails so the
+# Control Room can demonstrate autonomous recovery.
+
 DEMO_MODE = True
 failure_triggered = False
 
 
+# ==================================================
+# REAL WEB SEARCH
+# ==================================================
+
+def real_search(query):
+
+    api_key = os.getenv("OPENAI_API_KEY")
+
+    if not api_key:
+        raise RuntimeError(
+            "OPENAI_API_KEY not found in backend/.env"
+        )
+
+    client = OpenAI(api_key=api_key)
+
+    response = client.responses.create(
+        model="gpt-5.6-luna",
+
+        tools=[
+            {
+                "type": "web_search",
+                "search_context_size": "low"
+            }
+        ],
+
+        input=f"""
+Search the web for:
+
+{query}
+
+Give a concise answer using current information.
+
+Include:
+- the most important findings
+- relevant sources
+- important numbers or facts when available
+
+Keep the response concise.
+""",
+
+        max_output_tokens=2000
+    )
+
+    return response.output_text
+
+
+# ==================================================
+# PRIMARY SEARCH TOOL
+# ==================================================
+
 def search(query):
+
     global failure_triggered
 
-    print(f"Searching for: {query}")
+    print(f"\nSearching for: {query}")
 
-    # Controlled failure for the hackathon demo
+    # ------------------------------------------------
+    # INTENTIONAL FAILURE FOR HACKATHON DEMO
+    # ------------------------------------------------
+
     if DEMO_MODE and not failure_triggered:
-        failure_triggered = True
-        raise RuntimeError("Primary search tool unavailable")
 
-    results = [
+        failure_triggered = True
+
+        print("\n⚠ PRIMARY SEARCH TOOL FAILED")
+
+        raise RuntimeError(
+            "Primary search tool unavailable"
+        )
+
+    # ------------------------------------------------
+    # REAL SEARCH
+    # ------------------------------------------------
+
+    result = real_search(query)
+
+    return [
         {
-            "title": "AWS Deployment Options",
-            "source": "AWS",
-            "snippet": "Cloud deployment options for Python applications."
-        },
-        {
-            "title": "Azure App Services",
-            "source": "Microsoft Azure",
-            "snippet": "Managed hosting options for web applications."
+            "title": "Web Search Result",
+            "source": "OpenAI Web Search",
+            "snippet": result
         }
     ]
 
-    return results
 
+# ==================================================
+# FALLBACK SEARCH
+# ==================================================
 
 def fallback_search(query):
-    print(f"Fallback search activated for: {query}")
 
-    results = [
-        {
-            "title": "Fallback Cloud Deployment Result",
-            "source": "Fallback Source",
-            "snippet": "Alternative source successfully retrieved deployment information."
-        }
-    ]
+    print(
+        f"\n↻ FALLBACK SEARCH ACTIVATED"
+    )
 
-    return results
-
-
-if __name__ == "__main__":
-    query = "Python cloud deployment options"
+    print(
+        f"Fallback query: {query}"
+    )
 
     try:
-        results = search(query)
+
+        result = real_search(query)
+
+        return [
+            {
+                "title": "Fallback Web Search Result",
+                "source": "OpenAI Web Search",
+                "snippet": result
+            }
+        ]
+
     except Exception as error:
-        print(f"Primary search failed: {error}")
-        results = fallback_search(query)
 
-    print("\nSEARCH RESULTS\n")
+        print(
+            f"\n⚠ FALLBACK SEARCH FAILED: {error}"
+        )
 
-    for result in results:
-        print(f"Title: {result['title']}")
-        print(f"Source: {result['source']}")
-        print(f"Info: {result['snippet']}")
+        return [
+            {
+                "title": "Fallback Search",
+                "source": "Local Recovery System",
+                "snippet": (
+                    "The external search service was "
+                    "temporarily unavailable. "
+                    "Recovery path completed."
+                )
+            }
+        ]
